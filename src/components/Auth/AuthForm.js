@@ -7,6 +7,7 @@ const AuthForm = () => {
   const passwordInputRef = useRef();
 
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -18,6 +19,7 @@ const AuthForm = () => {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
+    setIsLoading(true);
     if(isLogin) {
 
     } else {
@@ -26,15 +28,16 @@ const AuthForm = () => {
         body: JSON.stringify({ 
           email: enteredEmail, 
           password: enteredPassword, 
-          returnSecureToken: true 
+          returnSecureToken: true
         }),
         headers: {
           "Content-Type": "application/json",
         }
       }).then((res) => {
         if(res.ok) {
-
+          setIsLoading(false);
         } else {
+          setIsLoading(false);
           //error in response
           return res.json().then((data) => {
             let errorMessage = "Authentication failed"; //generic error message
@@ -61,7 +64,8 @@ const AuthForm = () => {
           <input ref={passwordInputRef} type='password' id='password' required />
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? 'Login' : 'Create Account'}</button>
+          {!isLoading && <button>{isLogin ? 'Login' : 'Create Account'}</button>}
+          {isLoading && <p>Sending Request...</p>}
           <button
             type='button'
             className={classes.toggle}
