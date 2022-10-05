@@ -1,9 +1,11 @@
 import { useRef, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import AuthContext from '../../store/auth-context';
 
 import classes from './ProfileForm.module.css';
 
 const ProfileForm = () => {
+  const history = useHistory();
   const newPasswordInputRef = useRef();
 
   const authCtx = useContext(AuthContext);
@@ -26,6 +28,7 @@ const ProfileForm = () => {
       if(res.ok) {
         //if res ok, return promise after converted to json()
         res.json().then((res) => console.log(res)); // we shouldn't recieve a response as returnSecureToken: false
+        history.replace('/');
         alert("successfuly changed password")
       } else {
         //Res NOT ok, return promise after converted to json()
@@ -34,7 +37,7 @@ const ProfileForm = () => {
       }
     })
   }
-  
+
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <div className={classes.control}>
