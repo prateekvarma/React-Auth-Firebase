@@ -55,7 +55,7 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        authCtx.login(data.idToken);
+        authCtx.login(data.idToken); //sets the token into the context API
       })
       .catch((error) => alert(error.message));
   };
