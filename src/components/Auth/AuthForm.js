@@ -57,7 +57,8 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        authCtx.login(data.idToken); //sets the token into the context API
+        const expirationTime = new Date(new Date().getTime() + (+data.expiresIn * 1000)); //gets current time, adds it to expiresIn from firebase while converting string to num and converting seconds to milliseconds
+        authCtx.login(data.idToken, expirationTime.toISOString()); //sets the token into the context API
         history.replace('/');
       })
       .catch((error) => alert(error.message));
